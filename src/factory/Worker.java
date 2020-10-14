@@ -12,18 +12,17 @@ package factory;
 public class Worker extends Thread {
 	public static final int MAX_WIDGETS = 24;
 	
-	String name = "";
+	String workerName;
 	ConveyerBelt addToBelt;
 	ConveyerBelt removeFromBelt;
 	int widgetCount = 0;
 	Widget widget;
-	boolean flagB = true;
 	int totalProcessedB = 0;
 	int totalProcessedC = 0;
 	int totalProcessedD = 0;
 
 	public Worker(String n, ConveyerBelt belt1, ConveyerBelt belt2) {
-		this.name = n;
+		this.workerName = n;
 		this.addToBelt = belt1;
 		this.removeFromBelt = belt2;
 	}
@@ -31,24 +30,24 @@ public class Worker extends Thread {
 	public void workerInfo(String choice, int id, String handlers) {
 		switch(choice) {
 		case("retrieve"):
-			System.out.println(name + " is retrieving widget" + id + 
-					"<handled by " + handlers + "> from the belt " + 
-					removeFromBelt.name);
+			System.out.println(workerName + " is retrieving WIDGET" + id +
+					" <handled by " + handlers + "> from the belt " +
+					removeFromBelt.beltName);
 			break;
 		case("work"):
-			System.out.println(name + " is working on widget" + id +
-					"<handled by " + handlers + ">");
+			System.out.println(workerName + " is working on WIDGET" + id +
+					" <handled by " + handlers + ">");
 			break;
 		case("place"):
-			System.out.println(name + " is placing widget" + id +
-					"<handled by " + handlers + "> on the belt " + 
-					addToBelt.name);
+			System.out.println(workerName + " is placing WIDGET" + id +
+					" <handled by " + handlers + "> on the belt " +
+					addToBelt.beltName);
 			break;
 		}
 	}
 
 	public void run() {
-		switch(name) {
+		switch(workerName) {
 		case "Worker A":
 			while (true) {
 				ConveyerBelt.napping();
@@ -57,7 +56,7 @@ public class Worker extends Thread {
 					Widget widget = new Widget(widgetCount);
 					widget.workedOn();
 					workerInfo("work", widget.id, widget.printHandler());
-					addToBelt.enter(widget, name);
+					addToBelt.enter(widget, workerName);
 					workerInfo("place", widget.id, widget.printHandler());
 				} else {
 					interrupt();
@@ -71,11 +70,11 @@ public class Worker extends Thread {
 					interrupt();
 					return;
 				} else {
-					widget = removeFromBelt.remove(name);
+					widget = removeFromBelt.remove(workerName);
 					workerInfo("retrieve", widget.id, widget.printHandler());
 					widget.workedOn();
 					workerInfo("work", widget.id, widget.printHandler());
-					addToBelt.enter(widget, name);
+					addToBelt.enter(widget, workerName);
 					workerInfo("place", widget.id, widget.printHandler());
 					totalProcessedB++;
 				}
@@ -87,11 +86,11 @@ public class Worker extends Thread {
 					interrupt();
 					return;
 				} else {
-					widget = removeFromBelt.remove(name);
+					widget = removeFromBelt.remove(workerName);
 					workerInfo("retrieve", widget.id, widget.printHandler());
 					widget.workedOn();
 					workerInfo("work", widget.id, widget.printHandler());
-					addToBelt.enter(widget, name);
+					addToBelt.enter(widget, workerName);
 					workerInfo("place", widget.id, widget.printHandler());
 					totalProcessedC++;
 				}
@@ -105,11 +104,13 @@ public class Worker extends Thread {
 					System.out.println("Factory has finished processing " + totalProcessedD + " widgets");
 					return;
 				}
-				widget = removeFromBelt.remove(name);
+				widget = removeFromBelt.remove(workerName);
 				workerInfo("retrieve", widget.id, widget.printHandler());
 				widget.workedOn();
 				workerInfo("work", widget.id, widget.printHandler());
 				totalProcessedD++;
+				System.out.println("WIDGET" + widget.id + " <handled by " +
+						widget.printHandler() + "> COMPLETE!");
 			}
 		}
 	}

@@ -10,9 +10,8 @@ package factory;
  */
 
 public class Widget {
-	int id = 0;
+	int id;
 	int numHandlers = 0;
-	String handlers = "";
 
 	public Widget(int n) {
 		this.id = n;

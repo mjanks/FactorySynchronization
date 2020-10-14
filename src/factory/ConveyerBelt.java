@@ -4,7 +4,7 @@ package factory;
  * Modified by: Michael Janks
  * 
  * This was originally BoundedBuffer.java. I've made some modifications 
- * and changed the name of the class to ConveyerBelt. This program implements 
+ * and changed the beltName of the class to ConveyerBelt. This program implements 
  * the bounded buffer (conveyer belt) using Java synchronization.
  *
  * @author Greg Gagne, Peter Galvin, Avi Silberschatz
@@ -22,14 +22,14 @@ public class ConveyerBelt {
 	private int count;  // number of items in the buffer
 	private int in;     // points to the next free position in the buffer
 	private int out;    // points to the next full position in the buffer
-	public String name; // conveyer belt name
-	private Widget[] buffer;
+	public String beltName; // conveyer belt name
+	private final Widget[] buffer;
 
 	public ConveyerBelt(String n) {
 		count = 0;
 		in = 0;
 		out = 0;
-		this.name = n;
+		this.beltName = n;
 		buffer = new Widget[BUFFER_SIZE];
 	}
 
@@ -46,7 +46,7 @@ public class ConveyerBelt {
 		while (count == BUFFER_SIZE) {
 			try {
 				System.out.println("WARNING: " + worker + " is waiting to put widget" + 
-						item.id + "<handled by " + item.printHandler() + "> on belt " + name);
+						item.id + "<handled by " + item.printHandler() + "> on belt " + beltName);
 				wait();
 			}
 			catch (InterruptedException e) { }
@@ -72,7 +72,7 @@ public class ConveyerBelt {
 		}
 
 		--count;
-		item = (Widget) buffer[out];
+		item = buffer[out];
 		out = (out + 1) % BUFFER_SIZE;
 
 		notify();
