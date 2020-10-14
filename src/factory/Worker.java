@@ -102,7 +102,7 @@ public class Worker extends Thread {
 				if(totalProcessedD >= MAX_WIDGETS) {
 					interrupt();
 					System.out.println("All threads terminated");
-					System.out.println("Program finished processing " + totalProcessedD + " widgets");
+					System.out.println("Factory has finished processing " + totalProcessedD + " widgets");
 					return;
 				}
 				widget = removeFromBelt.remove(name);
