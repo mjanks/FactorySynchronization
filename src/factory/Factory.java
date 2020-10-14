@@ -20,6 +20,7 @@ public class Factory
 		Worker workerC = new Worker("Worker C", conveyerCD, conveyerBC);
 		Worker workerD = new Worker("Worker D", null, conveyerCD);
 
+		System.out.println("Factory is starting...");
 		workerA.start();
 		workerB.start();
 		workerC.start();
